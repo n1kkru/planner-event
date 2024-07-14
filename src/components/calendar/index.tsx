@@ -12,7 +12,7 @@ import React from "react";
 import { Cell } from "./Cell";
 import { ModalAuth } from "../ModalAuth/ModalAuth";
 import { useDispatch } from "src/services/store";
-import { eventsThunk } from 'src/services/slice';
+import { eventsThunk } from "src/services/slice";
 
 export interface GridCSS extends CSSProperties {
   "--w": number;
@@ -33,8 +33,8 @@ export function Calendar({ children }: CalendarProps) {
   const instance = useRef<MonthCalendar>(new MonthCalendar());
   const [calendar, setCurrent] = useState<CalendarMonthTable>(rebuildCalendar);
   const [isModalActive, setModalActive] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const nextMonth = () => {
     instance.current.next();
@@ -61,22 +61,28 @@ export function Calendar({ children }: CalendarProps) {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(eventsThunk());
-  }
+  };
 
   return (
     <section className="calendar">
       <nav className="controls">
         <div className="logo">
-          <img src={require('./logo.png')} alt="red collar" />
+          <img src={require("./logo.png")} alt="red collar" />
           <h1>red collar</h1>
-          <h2>planner <span className="accent">event</span></h2>
+          <h2>
+            planner <span className="accent">event</span>
+          </h2>
         </div>
         <div className="navigate">
           <span className="current-date">{calendar.label}</span>
-          <Button name="prev" className="arrow"  text="<" onClick={prevMonth} />
+          <Button name="prev" className="arrow" text="<" onClick={prevMonth} />
           <Button name="next" className="arrow" text=">" onClick={nextMonth} />
-          <Button name="sign" className="sign" text="Войти" onClick={handleModalOpen}/>
-
+          <Button
+            name="sign"
+            className="sign"
+            text="Войти"
+            onClick={handleModalOpen}
+          />
         </div>
       </nav>
 
@@ -92,7 +98,6 @@ export function Calendar({ children }: CalendarProps) {
         >
           {cells.map((_, index) => {
             const [x, y] = axis2D(index, calendar.width);
-            
             return (
               <Cell
                 tag="button"
@@ -101,7 +106,7 @@ export function Calendar({ children }: CalendarProps) {
                 className={clsx("day", calendar.table[index].className)}
                 onClick={handleModalOpen}
               >
-                {children 
+                {children
                   ? children(calendar.table[index])
                   : calendar.table[index].value}
               </Cell>
@@ -111,15 +116,15 @@ export function Calendar({ children }: CalendarProps) {
       </div>
       <div>
         {isModalActive && (
-          <ModalAuth 
+          <ModalAuth
             email={email}
-            password={password} 
-            isOpen={isModalActive} 
-            onClose={handleModalClose} 
+            password={password}
+            isOpen={isModalActive}
+            onClose={handleModalClose}
             onChangeEmail={onChangeEmail}
             onChangePassword={onChangePassword}
             onSubmit={handleSubmit}
-          /> 
+          />
         )}
       </div>
     </section>
